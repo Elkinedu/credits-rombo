@@ -1,5 +1,5 @@
 -- =====================================================
--- ENUM TYPES (values in Spanish)
+-- ENUM TYPES
 -- =====================================================
 
 CREATE TYPE risk_classification_enum AS ENUM ('A','B','C','D','E');

@@ -2,6 +2,7 @@ from app.customers.infrastructure.models import CustomerModel
 from app.customers.application.ports import CustomerRepositoryPort
 from app.extensions import db
 from app.customers.domain.entities import Customer
+from app.customers.domain.services import classify_risk
 
 class SqlAlchemyCustomerRepository(CustomerRepositoryPort):
 
@@ -15,11 +16,12 @@ class SqlAlchemyCustomerRepository(CustomerRepositoryPort):
             phone=customer.phone,
             city=customer.city,
             credit_score=customer.credit_score,
-            risk_classification=customer.risk_classification,
+            risk_classification=classify_risk(customer.credit_score),
         )
         db.session.add(model)
         db.session.commit()
         customer.id = model.id
+        customer.risk_classification = classify_risk(customer.credit_score)
         return customer
 
     def get_by_id(self, customer_id):
